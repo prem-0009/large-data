@@ -181,40 +181,42 @@ let data = {
 };
 
 const addressList = (info) => {
-  let males = info.results.filter((item) => {
-    return item.gender === "male";
-  });
-  let females = info.results.filter((item) => {
-    return item.gender === "female";
-  });
   return new Promise((resolve, reject) => {
-    return females ? resolve(females)
-    : reject(males)
+    let allFemales = info.results.filter((item) => {
+      return item.gender === "female";
+    });
+
+    let female = true;
+
+    return female ? resolve(allFemales) : reject("some errors just happened");
   });
 };
-addressList(data).then((data1) => {
-  // console.log('\n',data1[0])
 
-  let b = data1.forEach((item) => {
-    let {
-      name: { title, first, last },
-      location: {
-        street: { number, name: streetName },
-        city,
-        state,
-        country,
-        postcode,
-      },
-      email,
-      dob: { date },
-    } = item;
-    console.log(
-      `\n${title} ${first} ${last} \n${number} ${streetName}\n${city}, ${state}\n${country} ${postcode}\nEmail: ${email}\nBirthday: ${date.split("T")[0]}\n`
-    );
-  });
-  return b;
-  
-});
+addressList(data)
+  .then((data1) => {
+    data1.forEach((item) => {
+      let {
+        name: { title, first, last },
+        location: {
+          street: { number, name: streetName },
+          city,
+          state,
+          country,
+          postcode,
+        },
+        email,
+        dob: { date },
+      } = item;
+
+      console.log(
+        `\n${title} ${first} ${last} \n${number} ${streetName}\n${city}, ${state}\n${country} ${postcode}\nEmail: ${email}\nBirthday: ${
+          date.split("T")[0]
+        }\n`
+      );
+    });
+  })
+  .catch((error) => console.log(error));
+
 // Mrs. Yasemin Ozkok
 // 4167 Filistin Cd
 // Aksaray, Manisa
